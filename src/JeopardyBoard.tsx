@@ -23,6 +23,7 @@ type Question = {
   answer: string;
   value: number;
   isAnswered: boolean;
+  image?: string;
 };
 
 type Category = {
@@ -40,12 +41,16 @@ const initialCategories: Category[] = [
         answer: "Placeholder answer 1",
         value: 200,
         isAnswered: false,
+        image:
+          "https://cdn.britannica.com/02/152302-050-1A984FCB/African-savanna-elephant.jpg",
       },
       {
         question: "Placeholder question 2",
         answer: "Placeholder answer 2",
         value: 400,
         isAnswered: false,
+        image:
+          "https://cdn.britannica.com/02/152302-050-1A984FCB/African-savanna-elephant.jpg",
       },
       {
         question: "Placeholder question 3",
@@ -458,14 +463,15 @@ const initialCategories: Category[] = [
   },
 ];
 
-const JeopardyBoard = () => {
-  const [teams, setTeams] = useState<Team[]>([
-    { id: 1, name: "Team 1", score: 0 },
-    { id: 2, name: "Team 2", score: 0 },
-    { id: 3, name: "Team 3", score: 0 },
-  ]);
-  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+const initialTeams: Team[] = [
+  { id: 1, name: "Team 1", score: 0 },
+  { id: 2, name: "Team 2", score: 0 },
+  { id: 3, name: "Team 3", score: 0 },
+];
 
+const JeopardyBoard = () => {
+  const [teams, setTeams] = useState<Team[]>(initialTeams);
+  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
     null
@@ -574,7 +580,7 @@ const JeopardyBoard = () => {
         {categories.map((category, idx) => (
           <Card
             key={idx}
-            className="p-2 bg-blue-600 text-white text-center font-bold text-sm bg-[#071277] text-[#d69f4c]"
+            className="p-2 text-center font-bold text-sm bg-[#071277] text-[#d69f4c]"
           >
             {category.name}
           </Card>
@@ -624,6 +630,16 @@ const JeopardyBoard = () => {
           </DialogHeader>
           <div className="text-center space-y-4 p-4">
             <p className="text-lg">{selectedQuestion?.question}</p>
+            {selectedQuestion?.image && (
+              <div className="flex justify-center my-4">
+                <img
+                  src={selectedQuestion.image}
+                  alt="Question visual"
+                  className="max-w-full h-auto rounded-lg"
+                  style={{ maxHeight: "300px" }}
+                />
+              </div>
+            )}
             {showAnswer && (
               <p className="text-lg font-bold text-blue-600">
                 {selectedQuestion?.answer}
